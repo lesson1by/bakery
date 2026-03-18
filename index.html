@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Печь & Пряности — Домашняя выпечка и хинкали</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#" class="logo">
+        <img src="images/glavni.jpg" alt="Печь & Пряности" class="logo__img">
+        <span class="logo__text">Печь & Пряности</span>
+      </a>
+      <div class="header__nav-wrap">
+        <nav class="nav" aria-label="Основное меню">
+          <ul class="nav__list">
+            <li><a href="#menu" class="nav__link">Меню</a></li>
+            <li><a href="#about" class="nav__link">О нас</a></li>
+            <li><a href="#delivery" class="nav__link">Доставка и заказ</a></li>
+            <li><a href="#contacts" class="nav__link">Контакты</a></li>
+          </ul>
+        </nav>
+        <a href="#order-form" class="btn btn--primary header__order">Сделать заказ</a>
+      </div>
+      <button type="button" class="burger" aria-label="Открыть меню" aria-expanded="false" id="burger-btn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <h1 class="hero__title">Домашняя выпечка и хинкали.</h1>
+          <p class="hero__text">Готовим как для своих — только натуральные продукты и рецепты с душой.</p>
+          <a href="#menu" class="btn btn--primary btn--lg">Посмотреть меню</a>
+        </div>
+        <div class="hero__image-wrap">
+          <img src="images/glavni.jpg" alt="Домашняя выпечка" class="hero__image">
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="section menu">
+      <div class="container">
+        <h2 class="section__title">Наше меню</h2>
+        <div class="menu__grid">
+          <article class="card">
+            <div class="card__image-wrap">
+              <img src="images/kiss.png" alt="Поцелуй" class="card__image">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Поцелуй</h3>
+              <p class="card__price">от 120 ₽</p>
+              <p class="card__desc">Нежный десерт с кремом и ягодами.</p>
+              <p class="card__composition">Состав: мука, сливки, ягоды, сахар.</p>
+              <span class="card__label">за порцию</span>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__image-wrap">
+              <img src="images/eclair.jpg" alt="Эклер" class="card__image">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Эклер</h3>
+              <p class="card__price">от 100 ₽</p>
+              <p class="card__desc">Классический заварной эклер с кремом.</p>
+              <p class="card__composition">Состав: заварное тесто, крем.</p>
+              <span class="card__label">за штуку</span>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__image-wrap">
+              <img src="images/ideal.jpg" alt="Мужской идеал" class="card__image">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Мужской идеал</h3>
+              <p class="card__price">от 140 ₽</p>
+              <p class="card__desc">Сытный торт с шоколадом и орехами.</p>
+              <p class="card__composition">Состав: бисквит, шоколад, орехи, крем.</p>
+              <span class="card__label">за порцию</span>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__image-wrap">
+              <img src="images/spinach_cake.jpg" alt="Торт со шпинатом" class="card__image">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Торт со шпинатом</h3>
+              <p class="card__price">от 160 ₽</p>
+              <p class="card__desc">Необычный и полезный торт со шпинатом.</p>
+              <p class="card__composition">Состав: шпинат, творог, мука, яйца. Целый торт 700–800 г — 1000 ₽.</p>
+              <span class="card__label">за порцию / за торт</span>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__image-wrap">
+              <img src="images/khachapuri.jpg" alt="Хачапури" class="card__image">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Хачапури</h3>
+              <p class="card__price">от 150 ₽</p>
+              <p class="card__desc">Традиционная грузинская выпечка с сыром.</p>
+              <p class="card__composition">Состав: мука, сыр сулугуни, яйцо, масло.</p>
+              <span class="card__label">за штуку</span>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__image-wrap">
+              <img src="images/khinkali.jpg" alt="Хинкали" class="card__image">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Хинкали</h3>
+              <p class="card__price">от 80 ₽</p>
+              <p class="card__desc">Настоящие грузинские хинкали с мясом.</p>
+              <p class="card__composition">Состав: мука, мясо, лук, специи. Примерно 3 шт. по 80 ₽.</p>
+              <span class="card__label">за штуку</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section about">
+      <div class="container about__inner">
+        <div class="about__content">
+          <h2 class="section__title">О нас</h2>
+          <p class="about__text">Мы — семейная пекарня «Печь & Пряности». Готовим домашнюю выпечку, торты и хинкали по семейным рецептам. Каждое блюдо делаем с любовью, используя только проверенные продукты. Заказы принимаем на любой вкус — от классических эклеров до необычных тортов со шпинатом.</p>
+          <div class="about__features">
+            <div class="feature">
+              <div class="feature__icon" aria-hidden="true">🌾</div>
+              <p class="feature__text">Натуральные продукты</p>
+            </div>
+            <div class="feature">
+              <div class="feature__icon" aria-hidden="true">🕐</div>
+              <p class="feature__text">Готовим в день заказа</p>
+            </div>
+            <div class="feature">
+              <div class="feature__icon" aria-hidden="true">🎂</div>
+              <p class="feature__text">Индивидуальные заказы</p>
+            </div>
+          </div>
+        </div>
+        <div class="about__image-wrap">
+          <img src="images/onas.jpg" alt="Пекарня Печь и Пряности" class="about__image">
+        </div>
+      </div>
+    </section>
+
+    <!-- Delivery -->
+    <section id="delivery" class="section delivery">
+      <div class="container">
+        <h2 class="section__title">Доставка и заказ</h2>
+        <div class="delivery__grid">
+          <div class="delivery__block">
+            <h3 class="delivery__subtitle">Условия доставки</h3>
+            <ul class="delivery__list">
+              <li>Доставка по Тольятти и области</li>
+              <li>Минимальная сумма заказа — уточняйте по телефону</li>
+              <li>Время доставки согласовывается при заказе</li>
+              <li>Оплата при получении или по договорённости</li>
+            </ul>
+          </div>
+          <div class="delivery__block">
+            <h3 class="delivery__subtitle">Как заказать?</h3>
+            <ol class="delivery__steps">
+              <li><strong>Выберите блюда</strong> — из меню в форме ниже</li>
+              <li><strong>Свяжитесь с нами</strong> — по телефону или через форму заявки</li>
+              <li><strong>Подтвердите заказ</strong> — мы уточним время и адрес доставки</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacts & Order Form -->
+    <section id="contacts" class="section contacts">
+      <div class="container">
+        <div class="contacts__card">
+          <div class="contacts__info">
+            <h2 class="contacts__title">Контакты</h2>
+            <a href="tel:+79063385061" class="contacts__phone">+7 906 338-50-61</a>
+            <p class="contacts__city">г. Тольятти</p>
+            <div class="contacts__social">
+              <a href="#" class="contacts__social-link" aria-label="WhatsApp"><span aria-hidden="true">WhatsApp</span></a>
+              <a href="#" class="contacts__social-link" aria-label="Telegram"><span aria-hidden="true">Telegram</span></a>
+              <a href="#" class="contacts__social-link" aria-label="ВКонтакте"><span aria-hidden="true">ВКонтакте</span></a>
+            </div>
+            <div class="contacts__hours">
+              <span class="contacts__hours-label">Время работы</span>
+              <span class="contacts__hours-value">9:00 – 21:00</span>
+            </div>
+            <p class="contacts__hint">Звоните или пишите — оформим заказ и обсудим доставку.</p>
+          </div>
+          <div id="order-form" class="order-form">
+          <h2 class="section__title">Оставить заявку</h2>
+          <form class="form" id="main-form" novalidate>
+            <label class="form__label">
+              <span>Имя</span>
+              <input type="text" name="name" class="form__input" placeholder="Ваше имя" required>
+            </label>
+            <label class="form__label">
+              <span>Телефон</span>
+              <input type="tel" name="phone" class="form__input" placeholder="+7 (___) ___-__-__" required>
+            </label>
+            <label class="form__label">
+              <span>Желаемая дата доставки</span>
+              <input type="date" name="date" class="form__input" required>
+            </label>
+
+            <div class="form__dishes">
+              <label class="form__label">
+                <span>Блюдо</span>
+                <div class="select-wrap">
+                  <select name="dish" id="dish-select" class="form__select form__select--native" aria-hidden="true" tabindex="-1">
+                    <option value="">— Выберите блюдо —</option>
+                    <option value="Поцелуй (порция)">Поцелуй (порция)</option>
+                    <option value="Поцелуй (целиком)">Поцелуй (целиком)</option>
+                    <option value="Эклер (штука)">Эклер (штука)</option>
+                    <option value="Эклер (целиком)">Эклер (целиком)</option>
+                    <option value="Мужской идеал (порция)">Мужской идеал (порция)</option>
+                    <option value="Мужской идеал (целиком)">Мужской идеал (целиком)</option>
+                    <option value="Торт со шпинатом (порция)">Торт со шпинатом (порция)</option>
+                    <option value="Торт со шпинатом (целиком)">Торт со шпинатом (целиком)</option>
+                    <option value="Хачапури (штука)">Хачапури (штука)</option>
+                    <option value="Хачапури (целиком)">Хачапури (целиком)</option>
+                    <option value="Хинкали (порция)">Хинкали (порция)</option>
+                    <option value="Хинкали (целиком)">Хинкали (целиком)</option>
+                  </select>
+                  <button type="button" class="select-trigger" id="dish-select-trigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Выберите блюдо">
+                    <span class="select-trigger__text">— Выберите блюдо —</span>
+                    <span class="select-trigger__icon" aria-hidden="true"></span>
+                  </button>
+                  <div class="select-dropdown" id="dish-select-dropdown" role="listbox" aria-hidden="true"></div>
+                </div>
+              </label>
+              <div class="form__quantity-wrap">
+                <span class="form__quantity-label">Количество</span>
+                <div class="quantity">
+                  <button type="button" class="quantity__btn quantity__btn--minus" aria-label="Уменьшить">−</button>
+                  <input type="number" id="dish-qty" class="quantity__input" value="1" min="1" max="99">
+                  <button type="button" class="quantity__btn quantity__btn--plus" aria-label="Увеличить">+</button>
+                </div>
+                <button type="button" class="btn btn--secondary" id="add-dish">Добавить</button>
+              </div>
+            </div>
+
+            <div id="cart-items" class="cart-items" aria-live="polite"></div>
+
+            <label class="form__label">
+              <span>Комментарий к заказу</span>
+              <textarea name="comment" class="form__textarea" placeholder="Пожелания, адрес, время доставки..."></textarea>
+            </label>
+            <button type="button" class="btn btn--whatsapp btn--lg order-form__submit" id="send-whatsapp">Отправить в WhatsApp</button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__info">
+        <p class="footer__name">Печь & Пряности</p>
+        <p class="footer__city">г. Тольятти</p>
+        <p class="footer__hours">Время работы: 9:00 – 21:00</p>
+        <p class="footer__copy">© 2026 Печь & Пряности</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
