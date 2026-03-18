@@ -29,6 +29,10 @@
   const mainForm = document.getElementById('main-form');
   const sendWhatsAppBtn = document.getElementById('send-whatsapp');
   const dateInput = mainForm && mainForm.querySelector('input[name="date"]');
+  const toastEl = document.getElementById('toast');
+  const toastTextEl = document.getElementById('toast-text');
+  const toastCloseEl = document.getElementById('toast-close');
+  let toastTimer = null;
 
   // --- Бургер-меню ---
   if (burgerBtn && header) {
@@ -145,6 +149,25 @@
     return div.innerHTML;
   }
 
+  function showToast(message) {
+    if (!toastEl || !toastTextEl) return;
+    if (toastTimer) window.clearTimeout(toastTimer);
+    toastTextEl.textContent = message;
+    toastEl.classList.add('is-open');
+    toastEl.setAttribute('aria-hidden', 'false');
+    toastTimer = window.setTimeout(hideToast, 4200);
+  }
+
+  function hideToast() {
+    if (!toastEl) return;
+    toastEl.classList.remove('is-open');
+    toastEl.setAttribute('aria-hidden', 'true');
+  }
+
+  if (toastCloseEl) {
+    toastCloseEl.addEventListener('click', hideToast);
+  }
+
   if (addDishBtn) addDishBtn.addEventListener('click', addDish);
 
   // --- Кастомный выпадающий список блюд ---
@@ -254,7 +277,7 @@
   function sendToWhatsApp() {
     const khinkaliQty = getKhinkaliTotalQty();
     if (khinkaliQty > 0 && khinkaliQty < MIN_KHINKALI_QTY) {
-      alert('Минимальный заказ хинкали — ' + MIN_KHINKALI_QTY + ' шт суммарно. Сейчас: ' + khinkaliQty + '.');
+      showToast('Минимальный заказ хинкали — ' + MIN_KHINKALI_QTY + ' шт суммарно. Сейчас: ' + khinkaliQty + '.');
       return;
     }
     const text = buildWhatsAppText();
