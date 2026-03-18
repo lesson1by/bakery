@@ -2,21 +2,18 @@
   'use strict';
 
   const WHATSAPP_NUMBER = '79063385061';
+  const MIN_KHINKALI_QTY = 10;
 
   // Цены блюд (руб.) — соответствуют option value в select
   const DISH_PRICES = {
-    'Поцелуй (порция)': 120,
-    'Поцелуй (целиком)': 120,
-    'Эклер (штука)': 100,
-    'Эклер (целиком)': 100,
-    'Мужской идеал (порция)': 140,
-    'Мужской идеал (целиком)': 140,
-    'Торт со шпинатом (порция)': 160,
-    'Торт со шпинатом (целиком)': 1000,
-    'Хачапури (штука)': 150,
-    'Хачапури (целиком)': 150,
-    'Хинкали (порция)': 80,
-    'Хинкали (целиком)': 80
+    'Поцелуй целиком (1 кг)': 4000,
+    'Эклер порция (150 г)': 150,
+    'Мужской идеал целиком (1 кг)': 1000,
+    'Торт со шпинатом (1 кг)': 1000,
+    'Хачапури (700–800 г)': 1000,
+    'Хинкали говядина/индейка (100–120 г)': 100,
+    'Хинкали сыр (сулугуни) (100–120 г)': 80,
+    'Хинкали шпинат (100–120 г)': 80
   };
 
   // --- Корзина заказа (блюда с количеством и ценой) ---
@@ -87,6 +84,15 @@
     renderCart();
   }
 
+  function getKhinkaliTotalQty() {
+    return orderItems.reduce(function (acc, item) {
+      if (typeof item.name === 'string' && item.name.trim().toLowerCase().startsWith('хинкали')) {
+        return acc + (item.qty || 0);
+      }
+      return acc;
+    }, 0);
+  }
+
   function renderCart() {
     cartContainer.innerHTML = '';
     orderItems.forEach(function (item, index) {
@@ -113,6 +119,16 @@
       totalEl.className = 'cart-total';
       totalEl.innerHTML = '<span class="cart-total__label">Итого:</span> <span class="cart-total__value">' + total + ' ₽</span>';
       cartContainer.appendChild(totalEl);
+
+      const khinkaliQty = getKhinkaliTotalQty();
+      if (khinkaliQty > 0 && khinkaliQty < MIN_KHINKALI_QTY) {
+        const hintEl = document.createElement('div');
+        hintEl.className = 'cart-total';
+        hintEl.innerHTML =
+          '<span class="cart-total__label">Хинкали:</span> ' +
+          '<span class="cart-total__value">минимум ' + MIN_KHINKALI_QTY + ' шт суммарно (сейчас ' + khinkaliQty + ')</span>';
+        cartContainer.appendChild(hintEl);
+      }
     }
 
     cartContainer.querySelectorAll('.cart-item__remove').forEach(function (btn) {
@@ -236,6 +252,11 @@
   }
 
   function sendToWhatsApp() {
+    const khinkaliQty = getKhinkaliTotalQty();
+    if (khinkaliQty > 0 && khinkaliQty < MIN_KHINKALI_QTY) {
+      alert('Минимальный заказ хинкали — ' + MIN_KHINKALI_QTY + ' шт суммарно. Сейчас: ' + khinkaliQty + '.');
+      return;
+    }
     const text = buildWhatsAppText();
     const url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
     window.location.href = url;
