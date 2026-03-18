@@ -230,6 +230,7 @@
   // --- Кастомный выпадающий список блюд ---
   const dishSelectTrigger = document.getElementById('dish-select-trigger');
   const dishSelectDropdown = document.getElementById('dish-select-dropdown');
+  let lastQtyMin = 1;
 
   function syncQtyMinWithDish() {
     if (!dishQtyInput || !dishSelect) return;
@@ -237,7 +238,14 @@
     const minQty = isEclair ? MIN_ECLAIR_QTY : 1;
     dishQtyInput.setAttribute('min', String(minQty));
     const v = parseInt(dishQtyInput.value, 10) || 1;
-    if (v < minQty) dishQtyInput.value = minQty;
+    // Если переключились с эклеров (min=10) на другое блюдо — возвращаем 1,
+    // чтобы не оставалось "10 шт" для тортов и т.п.
+    if (lastQtyMin === MIN_ECLAIR_QTY && minQty === 1) {
+      dishQtyInput.value = 1;
+    } else if (v < minQty) {
+      dishQtyInput.value = minQty;
+    }
+    lastQtyMin = minQty;
   }
 
   if (dishSelect && dishSelectTrigger && dishSelectDropdown) {
