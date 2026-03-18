@@ -274,7 +274,57 @@
     return lines.join('\n');
   }
 
+  function normalizePhone(value) {
+    return String(value || '').replace(/[^\d+]/g, '');
+  }
+
+  function isValidRuPhone(value) {
+    const raw = normalizePhone(value);
+    const digits = raw.replace(/\D/g, '');
+    // Принимаем: 7XXXXXXXXXX / 8XXXXXXXXXX / +7XXXXXXXXXX (10-11 цифр с ведущей 7/8)
+    if (digits.length !== 11) return false;
+    return digits[0] === '7' || digits[0] === '8';
+  }
+
+  function validateBeforeSend() {
+    if (!mainForm) return true;
+    const nameEl = mainForm.querySelector('[name="name"]');
+    const phoneEl = mainForm.querySelector('[name="phone"]');
+    const dateEl = mainForm.querySelector('[name="date"]');
+
+    const name = nameEl && nameEl.value ? nameEl.value.trim() : '';
+    const phone = phoneEl && phoneEl.value ? phoneEl.value.trim() : '';
+    const date = dateEl && dateEl.value ? dateEl.value : '';
+
+    if (!name) {
+      showToast('Пожалуйста, укажите имя.');
+      if (nameEl) nameEl.focus();
+      return false;
+    }
+
+    if (!phone) {
+      showToast('Пожалуйста, укажите номер телефона.');
+      if (phoneEl) phoneEl.focus();
+      return false;
+    }
+
+    if (!isValidRuPhone(phone)) {
+      showToast('Введите корректный номер телефона (например: +7 9XX XXX-XX-XX).');
+      if (phoneEl) phoneEl.focus();
+      return false;
+    }
+
+    if (!date) {
+      showToast('Пожалуйста, выберите желаемую дату доставки.');
+      if (dateEl) dateEl.focus();
+      return false;
+    }
+
+    return true;
+  }
+
   function sendToWhatsApp() {
+    if (!validateBeforeSend()) return;
     const khinkaliQty = getKhinkaliTotalQty();
     if (khinkaliQty > 0 && khinkaliQty < MIN_KHINKALI_QTY) {
       showToast('Минимальный заказ хинкали — ' + MIN_KHINKALI_QTY + ' шт суммарно. Сейчас: ' + khinkaliQty + '.');
