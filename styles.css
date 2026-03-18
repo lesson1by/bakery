@@ -753,7 +753,7 @@ button { font-family: inherit; cursor: pointer; border: none; }
 
 /* Якорь "Сделать заказ" — чтобы заголовок не прятался под шапкой */
 #order-form {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 94px;
 }
 
 .order-form .section__title {

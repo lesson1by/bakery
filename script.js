@@ -3,6 +3,8 @@
 
   const WHATSAPP_NUMBER = '79063385061';
   const MIN_KHINKALI_QTY = 10;
+  const MIN_ECLAIR_QTY = 10;
+  const ECLAIR_DISH_VALUE = 'Эклер порция (150 г)';
 
   // Цены блюд (руб.) — соответствуют option value в select
   const DISH_PRICES = {
@@ -50,14 +52,41 @@
     });
   }
 
+  // --- Якоря: одинаково в Chrome и Opera GX ---
+  function scrollToAnchorWithHeaderOffset(hash) {
+    if (!hash || hash.charAt(0) !== '#') return false;
+    const target = document.querySelector(hash);
+    if (!target) return false;
+
+    const headerH = header ? header.getBoundingClientRect().height : 0;
+    const extraGap = 28;
+    const top = target.getBoundingClientRect().top + window.pageYOffset - headerH - extraGap;
+    window.scrollTo({ top: Math.max(0, Math.round(top)), behavior: 'smooth' });
+    return true;
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      const href = a.getAttribute('href');
+      if (!href || href === '#') return;
+      const didScroll = scrollToAnchorWithHeaderOffset(href);
+      if (!didScroll) return;
+      e.preventDefault();
+      try {
+        history.replaceState(null, '', href);
+      } catch (err) {}
+    });
+  });
+
   // --- Количество: кнопки +/- ---
   const qtyMinus = document.querySelector('.quantity__btn--minus');
   const qtyPlus = document.querySelector('.quantity__btn--plus');
 
   if (qtyMinus && dishQtyInput) {
     qtyMinus.addEventListener('click', function () {
+      const minQty = parseInt(dishQtyInput.getAttribute('min') || '1', 10) || 1;
       const v = parseInt(dishQtyInput.value, 10) || 1;
-      dishQtyInput.value = Math.max(1, v - 1);
+      dishQtyInput.value = Math.max(minQty, v - 1);
     });
   }
   if (qtyPlus && dishQtyInput) {
@@ -72,6 +101,13 @@
     const name = dishSelect.value;
     if (!name) return;
     const qty = parseInt(dishQtyInput.value, 10) || 1;
+
+    if (name === ECLAIR_DISH_VALUE && qty < MIN_ECLAIR_QTY) {
+      showToast('Эклеры можно заказать минимум от ' + MIN_ECLAIR_QTY + ' шт.');
+      dishQtyInput.value = MIN_ECLAIR_QTY;
+      dishQtyInput.focus();
+      return;
+    }
     const price = DISH_PRICES[name] != null ? DISH_PRICES[name] : 0;
     const existing = orderItems.find(function (item) { return item.name === name; });
     if (existing) {
@@ -80,7 +116,8 @@
       orderItems.push({ name: name, qty: qty, price: price });
     }
     renderCart();
-    dishQtyInput.value = 1;
+    const minQty = parseInt(dishQtyInput.getAttribute('min') || '1', 10) || 1;
+    dishQtyInput.value = minQty;
   }
 
   function removeDish(index) {
@@ -91,6 +128,15 @@
   function getKhinkaliTotalQty() {
     return orderItems.reduce(function (acc, item) {
       if (typeof item.name === 'string' && item.name.trim().toLowerCase().startsWith('хинкали')) {
+        return acc + (item.qty || 0);
+      }
+      return acc;
+    }, 0);
+  }
+
+  function getEclairTotalQty() {
+    return orderItems.reduce(function (acc, item) {
+      if (item && item.name === ECLAIR_DISH_VALUE) {
         return acc + (item.qty || 0);
       }
       return acc;
@@ -131,6 +177,16 @@
         hintEl.innerHTML =
           '<span class="cart-total__label">Хинкали:</span> ' +
           '<span class="cart-total__value">минимум ' + MIN_KHINKALI_QTY + ' шт суммарно (сейчас ' + khinkaliQty + ')</span>';
+        cartContainer.appendChild(hintEl);
+      }
+
+      const eclairQty = getEclairTotalQty();
+      if (eclairQty > 0 && eclairQty < MIN_ECLAIR_QTY) {
+        const hintEl = document.createElement('div');
+        hintEl.className = 'cart-total';
+        hintEl.innerHTML =
+          '<span class="cart-total__label">Эклеры:</span> ' +
+          '<span class="cart-total__value">минимум ' + MIN_ECLAIR_QTY + ' шт (сейчас ' + eclairQty + ')</span>';
         cartContainer.appendChild(hintEl);
       }
     }
@@ -174,6 +230,15 @@
   const dishSelectTrigger = document.getElementById('dish-select-trigger');
   const dishSelectDropdown = document.getElementById('dish-select-dropdown');
 
+  function syncQtyMinWithDish() {
+    if (!dishQtyInput || !dishSelect) return;
+    const isEclair = dishSelect.value === ECLAIR_DISH_VALUE;
+    const minQty = isEclair ? MIN_ECLAIR_QTY : 1;
+    dishQtyInput.setAttribute('min', String(minQty));
+    const v = parseInt(dishQtyInput.value, 10) || 1;
+    if (v < minQty) dishQtyInput.value = minQty;
+  }
+
   if (dishSelect && dishSelectTrigger && dishSelectDropdown) {
     const triggerText = dishSelectTrigger.querySelector('.select-trigger__text');
     const placeholder = '— Выберите блюдо —';
@@ -211,6 +276,9 @@
       btn.textContent = text;
       btn.addEventListener('click', function () {
         dishSelect.value = value;
+        try {
+          dishSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        } catch (err) {}
         updateTriggerDisplay();
         closeDropdown();
       });
@@ -235,6 +303,11 @@
     });
 
     updateTriggerDisplay();
+  }
+
+  if (dishSelect) {
+    dishSelect.addEventListener('change', syncQtyMinWithDish);
+    syncQtyMinWithDish();
   }
 
   // --- Отправка в WhatsApp ---
@@ -325,9 +398,21 @@
 
   function sendToWhatsApp() {
     if (!validateBeforeSend()) return;
+
+    if (!orderItems || orderItems.length === 0) {
+      showToast('Пожалуйста, добавьте хотя бы одно блюдо в заказ.');
+      return;
+    }
+
     const khinkaliQty = getKhinkaliTotalQty();
     if (khinkaliQty > 0 && khinkaliQty < MIN_KHINKALI_QTY) {
       showToast('Минимальный заказ хинкали — ' + MIN_KHINKALI_QTY + ' шт суммарно. Сейчас: ' + khinkaliQty + '.');
+      return;
+    }
+
+    const eclairQty = getEclairTotalQty();
+    if (eclairQty > 0 && eclairQty < MIN_ECLAIR_QTY) {
+      showToast('Эклеры можно заказать минимум от ' + MIN_ECLAIR_QTY + ' шт. Сейчас: ' + eclairQty + '.');
       return;
     }
     const text = buildWhatsAppText();
