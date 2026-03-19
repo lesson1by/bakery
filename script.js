@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const WHATSAPP_NUMBER = '79063385061';
+  const WHATSAPP_NUMBER = '79171329460';
   const MIN_KHINKALI_QTY = 10;
   const MIN_ECLAIR_QTY = 10;
   const ECLAIR_DISH_VALUE = 'Эклер порция (150 г)';
